@@ -10,6 +10,7 @@ namespace Terminals.Data
         
         public Boolean EnableTLSAuthentication { get; set; }
         public Boolean EnableNLAAuthentication { get; set; }
+        public Boolean AcceptUntrustedCertificates { get; set; }
 
         private string workingFolder;
         public String WorkingFolder
@@ -45,6 +46,7 @@ namespace Terminals.Data
                     EnableEncryption = this.EnableEncryption,
                     EnableNLAAuthentication = this.EnableNLAAuthentication,
                     EnableTLSAuthentication = this.EnableTLSAuthentication,
+                    AcceptUntrustedCertificates = this.AcceptUntrustedCertificates,
                     WorkingFolder = this.WorkingFolder,
                     StartProgram = this.StartProgram
                 };
