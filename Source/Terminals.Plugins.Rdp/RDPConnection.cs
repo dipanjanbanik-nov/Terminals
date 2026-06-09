@@ -517,7 +517,9 @@ namespace Terminals.Connections
 
         private void ConfigureSecurity(RdpOptions rdpOptions)
         {
-            if (rdpOptions.Security.EnableTLSAuthentication)
+            if (rdpOptions.Security.AcceptUntrustedCertificates)
+                this.client.AdvancedSettings5.AuthenticationLevel = 0;
+            else if (rdpOptions.Security.EnableTLSAuthentication)
                 this.client.AdvancedSettings5.AuthenticationLevel = 2;
 
             this.nonScriptable.EnableCredSspSupport = rdpOptions.Security.EnableNLAAuthentication;

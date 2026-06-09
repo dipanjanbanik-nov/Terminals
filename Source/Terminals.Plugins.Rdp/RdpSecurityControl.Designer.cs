@@ -39,6 +39,7 @@
             this.EnableNLAAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
             this.EnableTLSAuthenticationCheckbox = new System.Windows.Forms.CheckBox();
             this.EnableEncryptionCheckbox = new System.Windows.Forms.CheckBox();
+            this.AcceptUntrustedCertificatesCheckbox = new System.Windows.Forms.CheckBox();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -50,7 +51,7 @@
             this.panel2.Controls.Add(this.label24);
             this.panel2.Controls.Add(this.SecuriytStartProgramTextbox);
             this.panel2.Enabled = false;
-            this.panel2.Location = new System.Drawing.Point(3, 112);
+            this.panel2.Location = new System.Drawing.Point(3, 135);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(434, 99);
             this.panel2.TabIndex = 3;
@@ -100,7 +101,7 @@
             // SecuritySettingsEnabledCheckbox
             // 
             this.SecuritySettingsEnabledCheckbox.AutoSize = true;
-            this.SecuritySettingsEnabledCheckbox.Location = new System.Drawing.Point(9, 89);
+            this.SecuritySettingsEnabledCheckbox.Location = new System.Drawing.Point(9, 112);
             this.SecuritySettingsEnabledCheckbox.Name = "SecuritySettingsEnabledCheckbox";
             this.SecuritySettingsEnabledCheckbox.Size = new System.Drawing.Size(156, 17);
             this.SecuritySettingsEnabledCheckbox.TabIndex = 2;
@@ -152,10 +153,21 @@
             this.EnableEncryptionCheckbox.Text = "Enable Encryption";
             this.EnableEncryptionCheckbox.UseVisualStyleBackColor = true;
             // 
+            // AcceptUntrustedCertificatesCheckbox
+            // 
+            this.AcceptUntrustedCertificatesCheckbox.AutoSize = true;
+            this.AcceptUntrustedCertificatesCheckbox.Location = new System.Drawing.Point(9, 89);
+            this.AcceptUntrustedCertificatesCheckbox.Name = "AcceptUntrustedCertificatesCheckbox";
+            this.AcceptUntrustedCertificatesCheckbox.Size = new System.Drawing.Size(196, 17);
+            this.AcceptUntrustedCertificatesCheckbox.TabIndex = 36;
+            this.AcceptUntrustedCertificatesCheckbox.Text = "Accept Untrusted Certificates";
+            this.AcceptUntrustedCertificatesCheckbox.UseVisualStyleBackColor = true;
+            // 
             // RdpSecurityControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.AcceptUntrustedCertificatesCheckbox);
             this.Controls.Add(this.EnableEncryptionCheckbox);
             this.Controls.Add(this.EnableNLAAuthenticationCheckbox);
             this.Controls.Add(this.EnableTLSAuthenticationCheckbox);
@@ -184,5 +196,6 @@
         private System.Windows.Forms.CheckBox EnableNLAAuthenticationCheckbox;
         private System.Windows.Forms.CheckBox EnableTLSAuthenticationCheckbox;
         private System.Windows.Forms.CheckBox EnableEncryptionCheckbox;
+        private System.Windows.Forms.CheckBox AcceptUntrustedCertificatesCheckbox;
     }
 }

@@ -27,6 +27,7 @@ namespace Terminals.Forms.EditFavorite
             rdpOptions.Security.EnableTLSAuthentication = this.EnableTLSAuthenticationCheckbox.Checked;
             rdpOptions.Security.EnableNLAAuthentication = this.EnableNLAAuthenticationCheckbox.Checked;
             rdpOptions.Security.EnableEncryption = this.EnableEncryptionCheckbox.Checked;
+            rdpOptions.Security.AcceptUntrustedCertificates = this.AcceptUntrustedCertificatesCheckbox.Checked;
 
             rdpOptions.Security.Enabled = this.SecuritySettingsEnabledCheckbox.Checked;
             if (this.SecuritySettingsEnabledCheckbox.Checked)
@@ -47,6 +48,7 @@ namespace Terminals.Forms.EditFavorite
             this.EnableTLSAuthenticationCheckbox.Checked = rdpOptions.Security.EnableTLSAuthentication;
             this.EnableNLAAuthenticationCheckbox.Checked = rdpOptions.Security.EnableNLAAuthentication;
             this.EnableEncryptionCheckbox.Checked = rdpOptions.Security.EnableEncryption;
+            this.AcceptUntrustedCertificatesCheckbox.Checked = rdpOptions.Security.AcceptUntrustedCertificates;
             this.SecuritySettingsEnabledCheckbox.Checked = rdpOptions.Security.Enabled;
             this.SecurityWorkingFolderTextBox.Text = rdpOptions.Security.WorkingFolder;
             this.SecuriytStartProgramTextbox.Text = rdpOptions.Security.StartProgram;
