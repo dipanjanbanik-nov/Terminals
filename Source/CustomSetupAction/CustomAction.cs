@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Deployment.WindowsInstaller;
+using WixToolset.Dtf.WindowsInstaller;
 
 namespace CustomSetupAction
 {
