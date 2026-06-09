@@ -1,4 +1,5 @@
 using System.Data;
+using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 
 namespace Terminals.Data.DB

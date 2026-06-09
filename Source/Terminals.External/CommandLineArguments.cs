@@ -996,6 +996,7 @@ namespace Terminals.CommandLine
             }
             catch (System.IndexOutOfRangeException exc)
             {
+                _ = exc;
                 // got EOF 
                 if (inQuotes)
                 {
