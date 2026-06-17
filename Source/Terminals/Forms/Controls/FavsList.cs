@@ -55,10 +55,14 @@ namespace Terminals
         internal void AssignServices(IPersistence persistence, ConnectionManager connectionManager,
             FavoriteIcons favoriteIcons, IConnectionCommands connectionCommands)
         {
+            if (this.connectionCommands != null)
+                this.connectionCommands.ConnectionStateChanged -= this.ConnectionCommands_StateChanged;
+
             this.persistence = persistence;
             this.connectionManager = connectionManager;
             this.favoriteIcons = favoriteIcons;
             this.connectionCommands = connectionCommands;
+            this.connectionCommands.ConnectionStateChanged += this.ConnectionCommands_StateChanged;
         }
 
         #region Private methods
@@ -89,6 +93,7 @@ namespace Terminals
             this.historyTreeView.Load(this.persistence, this.favoriteIcons);
             this.LoadState();
             this.favsTree.MouseUp += new MouseEventHandler(this.FavsTree_MouseUp);
+            this.favsTree.AfterSelect += new TreeViewEventHandler(this.FavsTree_AfterSelect);
             this.searchTextBox.LoadEvents(this.persistence);
             // hadle events
             this.searchPanel1.LoadEvents(this.persistence, this.favoriteIcons);
@@ -726,6 +731,24 @@ namespace Terminals
         {
             this.CloseMenuStrips();
             this.connectionCommands.Disconnect();
+        }
+
+        private void ConnectionCommands_StateChanged(object sender, EventArgs e)
+        {
+            this.UpdateConnectionButtonsState();
+        }
+
+        private void FavsTree_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            this.UpdateConnectionButtonsState();
+        }
+
+        private void UpdateConnectionButtonsState()
+        {
+            IFavorite selected = this.favsTree.SelectedFavorite;
+            bool canExecute = this.connectionCommands.CanExecute(selected);
+            this.reconnectButton.Enabled = canExecute;
+            this.disconnectButton.Enabled = canExecute;
         }
     }
 }
