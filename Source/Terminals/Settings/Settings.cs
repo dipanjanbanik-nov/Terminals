@@ -915,7 +915,21 @@ namespace Terminals.Configuration
                 SaveImmediatelyIfRequested();
             }
         }
-        
+
+        public bool RememberFavoriteTreeExpansion
+        {
+            get
+            {
+                return GetSection().RememberFavoriteTreeExpansion;
+            }
+
+            set
+            {
+                GetSection().RememberFavoriteTreeExpansion = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
         #endregion
 
         #region Persistence File/Sql database

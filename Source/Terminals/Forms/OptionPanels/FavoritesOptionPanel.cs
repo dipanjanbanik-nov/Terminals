@@ -15,6 +15,7 @@ namespace Terminals.Forms
 
         public void LoadSettings()
         {
+            this.chkRememberFavExpansion.Checked = settings.RememberFavoriteTreeExpansion;
             this.chkAutoCaseTags.Checked = settings.AutoCaseTags;
             this.chkAutoExapandTagsPanel.Checked = settings.AutoExapandTagsPanel;
             this.chkEnableFavoritesPanel.Checked = settings.EnableFavoritesPanel;
@@ -38,6 +39,7 @@ namespace Terminals.Forms
 
         public void SaveSettings()
         {
+            settings.RememberFavoriteTreeExpansion = this.chkRememberFavExpansion.Checked;
             settings.AutoCaseTags = this.chkAutoCaseTags.Checked;
             settings.AutoExapandTagsPanel = this.chkAutoExapandTagsPanel.Checked;
             settings.EnableFavoritesPanel = this.chkEnableFavoritesPanel.Checked;

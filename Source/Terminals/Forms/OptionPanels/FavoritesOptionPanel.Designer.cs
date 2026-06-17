@@ -37,6 +37,7 @@ namespace Terminals.Forms
             this.ConnectionNameRadioButton = new System.Windows.Forms.RadioButton();
             this.ServerNameRadio = new System.Windows.Forms.RadioButton();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.chkRememberFavExpansion = new System.Windows.Forms.CheckBox();
             this.chkAutoCaseTags = new System.Windows.Forms.CheckBox();
             this.chkAutoExapandTagsPanel = new System.Windows.Forms.CheckBox();
             this.chkEnableFavoritesPanel = new System.Windows.Forms.CheckBox();
@@ -61,7 +62,7 @@ namespace Terminals.Forms
             this.FavSortGroupBox.Controls.Add(this.ProtocolRadionButton);
             this.FavSortGroupBox.Controls.Add(this.ConnectionNameRadioButton);
             this.FavSortGroupBox.Controls.Add(this.ServerNameRadio);
-            this.FavSortGroupBox.Location = new System.Drawing.Point(6, 97);
+            this.FavSortGroupBox.Location = new System.Drawing.Point(6, 124);
             this.FavSortGroupBox.Name = "FavSortGroupBox";
             this.FavSortGroupBox.Size = new System.Drawing.Size(500, 114);
             this.FavSortGroupBox.TabIndex = 26;
@@ -114,12 +115,13 @@ namespace Terminals.Forms
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.chkRememberFavExpansion);
             this.groupBox11.Controls.Add(this.chkAutoCaseTags);
             this.groupBox11.Controls.Add(this.chkAutoExapandTagsPanel);
             this.groupBox11.Controls.Add(this.chkEnableFavoritesPanel);
             this.groupBox11.Location = new System.Drawing.Point(6, 3);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(500, 88);
+            this.groupBox11.Size = new System.Drawing.Size(500, 115);
             this.groupBox11.TabIndex = 0;
             this.groupBox11.TabStop = false;
             // 
@@ -155,6 +157,18 @@ namespace Terminals.Forms
             this.chkEnableFavoritesPanel.Text = "Enable Favorites Panel";
             this.chkEnableFavoritesPanel.UseVisualStyleBackColor = true;
             // 
+            // chkRememberFavExpansion
+            // 
+            this.chkRememberFavExpansion.AutoSize = true;
+            this.chkRememberFavExpansion.Checked = true;
+            this.chkRememberFavExpansion.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkRememberFavExpansion.Location = new System.Drawing.Point(6, 89);
+            this.chkRememberFavExpansion.Name = "chkRememberFavExpansion";
+            this.chkRememberFavExpansion.Size = new System.Drawing.Size(212, 17);
+            this.chkRememberFavExpansion.TabIndex = 23;
+            this.chkRememberFavExpansion.Text = "Remember last position in Favourite List";
+            this.chkRememberFavExpansion.UseVisualStyleBackColor = true;
+            // 
             // FavoritesOptionPanel
             // 
             this.Controls.Add(this.panel1);
@@ -178,6 +192,7 @@ namespace Terminals.Forms
         private RadioButton ConnectionNameRadioButton;
         private RadioButton ServerNameRadio;
         private GroupBox groupBox11;
+        private CheckBox chkRememberFavExpansion;
         private CheckBox chkAutoCaseTags;
         private CheckBox chkAutoExapandTagsPanel;
         private CheckBox chkEnableFavoritesPanel;

@@ -9,16 +9,21 @@ namespace Terminals.Forms.Controls
     /// </summary>
     internal partial class TreeView : System.Windows.Forms.TreeView
     {
+        /// <summary>Separates individual path entries in the persisted string.</summary>
         private const string JOIN_SEPARATOR = "%%";
-        
+
+        /// <summary>Separates path segments within a single node path (e.g. "Parent|Child|GrandChild").</summary>
+        private const string PATH_SEPARATOR = "|";
+
         protected TreeView()
         {
             InitializeComponent();
         }
 
         /// <summary>
-        /// Gets or sets collection of expanded tree node names as one text.
-        /// This allowes load or save the expanded state.
+        /// Gets or sets the expansion state of every group node in the tree as a single string.
+        /// Full nested paths are stored, e.g. "Root%%Root|Child%%Root|Child|GrandChild".
+        /// Compatible with the old flat format so existing settings are read correctly.
         /// </summary>
         internal string ExpandedNodes
         {
@@ -28,29 +33,79 @@ namespace Terminals.Forms.Controls
 
         private string GetExpandedFavoriteNodes()
         {
-            List<string> expandedNodes = new List<string>();
-            foreach (TreeNode treeNode in this.Nodes)
+            var expandedPaths = new List<string>();
+            CollectExpandedPaths(this.Nodes, string.Empty, expandedPaths);
+            return string.Join(JOIN_SEPARATOR, expandedPaths.ToArray());
+        }
+
+        /// <summary>
+        /// Recursively walks the tree and records the full path of every expanded GroupTreeNode.
+        /// </summary>
+        private static void CollectExpandedPaths(TreeNodeCollection nodes, string parentPath, List<string> result)
+        {
+            foreach (TreeNode treeNode in nodes)
             {
-                if (treeNode.IsExpanded)
-                    expandedNodes.Add(treeNode.Text);
+                if (!(treeNode is GroupTreeNode) || !treeNode.IsExpanded)
+                    continue;
+
+                string nodePath = string.IsNullOrEmpty(parentPath)
+                    ? treeNode.Text
+                    : parentPath + PATH_SEPARATOR + treeNode.Text;
+
+                result.Add(nodePath);
+                CollectExpandedPaths(treeNode.Nodes, nodePath, result);
             }
-            return string.Join(JOIN_SEPARATOR, expandedNodes.ToArray());
         }
 
         private void ExpandTreeView(string savedNodesToExpand)
         {
-            var nodesToExpand = new List<string>();
-            if (!string.IsNullOrEmpty(savedNodesToExpand))
-                nodesToExpand.AddRange(Regex.Split(savedNodesToExpand, JOIN_SEPARATOR));
+            if (string.IsNullOrEmpty(savedNodesToExpand))
+                return;
 
-            if (nodesToExpand.Count > 0)
+            var paths = new List<string>(Regex.Split(savedNodesToExpand, JOIN_SEPARATOR));
+
+            // Expand shallower paths first so parents are lazy-loaded before children are sought.
+            paths.Sort((a, b) => CountChar(a, '|') - CountChar(b, '|'));
+
+            foreach (string path in paths)
             {
-                foreach (TreeNode treeNode in this.Nodes)
-                {
-                    if (nodesToExpand.Contains(treeNode.Text))
-                        treeNode.Expand();
-                }
+                if (string.IsNullOrEmpty(path))
+                    continue;
+
+                ExpandNodePath(this.Nodes, path.Split(new char[] { '|' }), 0);
             }
+        }
+
+        /// <summary>
+        /// Walks <paramref name="segments"/> depth-first, expanding each matching node.
+        /// Calling Expand() on a GroupTreeNode that is not yet loaded fires AfterExpand,
+        /// which triggers lazy loading so child nodes are available for the next segment.
+        /// </summary>
+        private static void ExpandNodePath(TreeNodeCollection nodes, string[] segments, int depth)
+        {
+            if (depth >= segments.Length)
+                return;
+
+            foreach (TreeNode treeNode in nodes)
+            {
+                if (treeNode.Text != segments[depth])
+                    continue;
+
+                if (!treeNode.IsExpanded)
+                    treeNode.Expand();
+
+                ExpandNodePath(treeNode.Nodes, segments, depth + 1);
+                return;
+            }
+        }
+
+        private static int CountChar(string text, char c)
+        {
+            int count = 0;
+            foreach (char ch in text)
+                if (ch == c) count++;
+            return count;
         }
     }
 }
+
