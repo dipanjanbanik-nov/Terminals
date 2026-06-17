@@ -810,6 +810,19 @@ namespace Terminals
             }
         }
 
+        [ConfigurationProperty("rememberFavoriteTreeExpansion", DefaultValue = true)]
+        public bool RememberFavoriteTreeExpansion
+        {
+            get
+            {
+                return (bool)this["rememberFavoriteTreeExpansion"];
+            }
+            set
+            {
+                this["rememberFavoriteTreeExpansion"] = value;
+            }
+        }
+
         [ConfigurationProperty("favorites")]
         [ConfigurationCollection(typeof(FavoriteConfigurationElementCollection))]
         public FavoriteConfigurationElementCollection Favorites
