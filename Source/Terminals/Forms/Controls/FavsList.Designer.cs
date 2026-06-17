@@ -59,6 +59,8 @@
             this.addGroupButton = new System.Windows.Forms.ToolStripButton();
             this.removeGroupButton = new System.Windows.Forms.ToolStripButton();
             this.connectButton = new System.Windows.Forms.ToolStripButton();
+            this.reconnectButton = new System.Windows.Forms.ToolStripButton();
+            this.disconnectButton = new System.Windows.Forms.ToolStripButton();
             this.collapseButton = new System.Windows.Forms.ToolStripButton();
             this.HistoryTabPage = new System.Windows.Forms.TabPage();
             this.historyTreeMenu = new System.Windows.Forms.ToolStrip();
@@ -332,6 +334,8 @@
             this.addGroupButton,
             this.removeGroupButton,
             this.connectButton,
+            this.reconnectButton,
+            this.disconnectButton,
             this.collapseButton});
             this.favoritesTreeMenu.Location = new System.Drawing.Point(3, 3);
             this.favoritesTreeMenu.Name = "favoritesTreeMenu";
@@ -399,6 +403,30 @@
             this.collapseButton.Text = "Collapse";
             this.collapseButton.ToolTipText = "Collapse favorites tree";
             this.collapseButton.Click += new System.EventHandler(this.CollapseAllToolStripMenuItem_Click);
+            // 
+            // reconnectButton
+            // 
+            this.reconnectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.reconnectButton.Enabled = false;
+            this.reconnectButton.Image = global::Terminals.Properties.Resources.Refresh;
+            this.reconnectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.reconnectButton.Name = "reconnectButton";
+            this.reconnectButton.Size = new System.Drawing.Size(23, 22);
+            this.reconnectButton.Text = "Reconnect";
+            this.reconnectButton.ToolTipText = "Reconnect to the selected favorite";
+            this.reconnectButton.Click += new System.EventHandler(this.ReconnectToolStripMenuItem_Click);
+            // 
+            // disconnectButton
+            // 
+            this.disconnectButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.disconnectButton.Enabled = false;
+            this.disconnectButton.Image = global::Terminals.Properties.Resources.disconnect;
+            this.disconnectButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.disconnectButton.Name = "disconnectButton";
+            this.disconnectButton.Size = new System.Drawing.Size(23, 22);
+            this.disconnectButton.Text = "Disconnect";
+            this.disconnectButton.ToolTipText = "Disconnect from the selected favorite";
+            this.disconnectButton.Click += new System.EventHandler(this.DisconnectToolStripMenuItem_Click);
             // 
             // HistoryTabPage
             // 
@@ -741,6 +769,8 @@
         private System.Windows.Forms.ToolStripButton addGroupButton;
         private System.Windows.Forms.ToolStripButton removeGroupButton;
         private System.Windows.Forms.ToolStripButton connectButton;
+        private System.Windows.Forms.ToolStripButton reconnectButton;
+        private System.Windows.Forms.ToolStripButton disconnectButton;
         private System.Windows.Forms.ToolStripMenuItem collapseAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton collapseButton;
         private Forms.Controls.HistoryTreeView historyTreeView;

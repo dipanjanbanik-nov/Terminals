@@ -56,6 +56,8 @@ namespace Terminals
 
         private FavoriteIcons favoriteIcons;
 
+        public event EventHandler ConnectionStateChanged;
+
         #endregion
 
         #region Properties
@@ -874,6 +876,9 @@ namespace Terminals
             this.reconnectToolStripMenuItem.Enabled = hasSelectedConnection;
             this.addTerminalToGroupToolStripMenuItem.Enabled = hasSelectedConnection;
             this.saveTerminalsAsGroupToolStripMenuItem.Enabled = hasSelectedConnection;
+
+            if (this.ConnectionStateChanged != null)
+                this.ConnectionStateChanged(this, EventArgs.Empty);
         }
 
         private void AssingTitle()
