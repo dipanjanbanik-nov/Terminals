@@ -20,7 +20,13 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration.Install" />
-    <PackageReference Include="WiX" GeneratePathProperty="true"  />
+    <PackageReference Include="coverlet.collector">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="EntityFramework" />
+    <PackageReference Include="log4net" />
+    <PackageReference Include="WiX" GeneratePathProperty="true" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Deployment.WindowsInstaller">
