@@ -25,10 +25,14 @@ namespace Tests.UserInterface
         [TestMethod]
         public void ReadOnlyFile_Save_ThrowsAnException()
         {
-            Assert.Throws<UnauthorizedAccessException>(() =>
+            try
             {
-                    AssertReadOnlyFileSave();
-            });
+                AssertReadOnlyFileSave();
+                Assert.Fail("Expected UnauthorizedAccessException was not thrown");
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
 
             SetSettingsFileAttributes(FileLocations.ToolStripsFullFileName, FileAttributes.Archive);
 

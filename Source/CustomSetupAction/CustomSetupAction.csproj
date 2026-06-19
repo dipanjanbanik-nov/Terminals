@@ -10,8 +10,8 @@
     <ProjectGuid>{A74A4FE1-D67A-4C9D-847A-5E3708B61BA8}</ProjectGuid>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <TargetFramework>net4.8</TargetFramework>
-    <WixCATargetsPath Condition=" '$(WixCATargetsPath)' == '' ">$(MSBuildExtensionsPath)\Microsoft\WiX\v3.x\Wix.CA.targets</WixCATargetsPath>
     <Platforms>AnyCPU;x86</Platforms>
+	<AcceptEula>wix7</AcceptEula>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -26,17 +26,12 @@
     </PackageReference>
     <PackageReference Include="EntityFramework" />
     <PackageReference Include="log4net" />
-    <PackageReference Include="WiX" GeneratePathProperty="true" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Deployment.WindowsInstaller">
-      <HintPath>$(PkgWiX)\tools\Microsoft.Deployment.WindowsInstaller.dll</HintPath>
-    </Reference>
+    <PackageReference Include="WixToolset.Dtf.CustomAction" />
+    <PackageReference Include="WixToolset.Dtf.WindowsInstaller" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Terminals\Properties\Common.AssemblyInfo.cs">
       <Link>Properties\Common.AssemblyInfo.cs</Link>
     </Compile>
   </ItemGroup>
-  <Import Project="$(WixCATargetsPath)" />
 </Project>

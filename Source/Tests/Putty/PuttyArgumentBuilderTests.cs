@@ -6,7 +6,7 @@ using Terminals.Plugins.Putty;
 
 namespace Tests.Putty
 {
-    public class PuttyArgumentBuilderTests<TOptions> where TOptions : PuttyOptions
+    public abstract class PuttyArgumentBuilderTests<TOptions> where TOptions : PuttyOptions
     {
         protected TOptions Options { get; set; }
         protected string Protocol { get; set; }
@@ -22,11 +22,15 @@ namespace Tests.Putty
         [TestMethod]
         public void InvalidProtocol_Build_Throws()
         {
-            Assert.Throws<ArgumentException>(() =>
+            try
             {
                 this.Protocol = "Unknown";
                 this.BuildArguments();
-            });
+                Assert.Fail("Expected ArgumentException was not thrown");
+            }
+            catch (ArgumentException)
+            {
+            }
         }
 
         protected string BuildArguments()

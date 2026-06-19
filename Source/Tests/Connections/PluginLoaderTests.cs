@@ -26,12 +26,16 @@ namespace Tests.Connections
         [TestMethod]
         public void NoEnabledPlugins_Load_ThrowsApplicationException()
         {
-            Assert.Throws<ApplicationException>(() => 
+            try
             {
                 var disabledPlugins = this.CreateAllAvailablePlugins();
                 var loader = CreateLoader(disabledPlugins);
                 loader.Load();
-            });
+                Assert.Fail("Expected ApplicationException was not thrown");
+            }
+            catch (ApplicationException)
+            {
+            }
         }
 
         [TestMethod]

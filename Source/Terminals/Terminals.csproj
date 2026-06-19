@@ -92,6 +92,7 @@
     <Compile Include="Forms\**\*.cs" />
     <EmbeddedResource Include="Forms\**\*.resx" />
     <Compile Include="Credentials\**\*.cs" />
+    <EmbeddedResource Include="Credentials\**\*.resx" />
     <Compile Include="CaptureManager\**\*.cs" />
     <EmbeddedResource Include="CaptureManager\**\*.resx" />
     <Compile Include="CommandLine\**\*.cs" />

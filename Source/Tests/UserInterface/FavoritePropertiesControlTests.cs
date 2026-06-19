@@ -106,7 +106,7 @@ namespace Tests.UserInterface
             const string PROTOCOL_MESSAGE = "Roundtrip has to preserve the protocol properties";
             var expectedType = typeof(VncOptions).FullName;
             string protocolProperties = result.ProtocolProperties.GetType().FullName;
-            Assert.AreEqual(protocolProperties, expectedType, PROTOCOL_MESSAGE);
+            Assert.AreEqual(expectedType, protocolProperties, PROTOCOL_MESSAGE);
         }
 
         private void LoadPropertiesControl()

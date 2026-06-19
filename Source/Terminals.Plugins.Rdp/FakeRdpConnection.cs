@@ -4,7 +4,7 @@ namespace Terminals.Connections
     {
         public override bool Connected { get { return true; } }
 
-        public new bool IsTerminalServer { get { return true; } }
+        public bool IsTerminalServer { get { return true; } }
 
         public override bool Connect()
         {

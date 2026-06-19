@@ -16,6 +16,7 @@ namespace Tests.SqlPersisted
     /// </summary>
     [DeploymentItem(DATABASE_LOG)]
     [DeploymentItem(DATABASE_MDF)]
+    [TestClass]
     public class TestsLab
     {
         private const string DBF_FILE_NAME = "Terminals.mdf";

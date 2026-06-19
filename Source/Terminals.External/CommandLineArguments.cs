@@ -994,7 +994,7 @@ namespace Terminals.CommandLine
                     currentArg.Length = 0;
                 }
             }
-            catch (System.IndexOutOfRangeException exc)
+            catch (System.IndexOutOfRangeException)
             {
                 // got EOF 
                 if (inQuotes)

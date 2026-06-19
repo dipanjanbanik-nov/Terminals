@@ -92,7 +92,7 @@ namespace Tests.SqlPersisted
         {
             // next method loads details of not loaded favorite from database, it shouldn't fail, even if it is a copy.
             IFavorite secondary = this.SecondaryFavorites.ToList()[1];
-            Assert.AreEqual(secondary.ServerName, FAVORITE_SERVERNAME2, "ServerName not updated properly in target copy.");
+            Assert.AreEqual(FAVORITE_SERVERNAME2, secondary.ServerName, "ServerName not updated properly in target copy.");
         }
     }
 }
