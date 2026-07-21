@@ -24,6 +24,7 @@ namespace Terminals.Forms
             this.txtDefaultDesktopShare.Text = settings.DefaultDesktopShare;
             this.PortscanTimeoutTextBox.Text = settings.PortScanTimeoutSeconds.ToString();
             this.restoreWindowCheckbox.Checked = settings.RestoreWindowOnLastTerminalDisconnect;
+            this.autoResizeCheckbox.Checked = settings.AutoResizeConnectionsOnWindowResize;
         }
 
         public void SaveSettings()
@@ -33,6 +34,7 @@ namespace Terminals.Forms
             settings.AskToReconnect = this.tryReconnectCheckBox.Checked;
             settings.DefaultDesktopShare = this.txtDefaultDesktopShare.Text;
             settings.RestoreWindowOnLastTerminalDisconnect = this.restoreWindowCheckbox.Checked;
+            settings.AutoResizeConnectionsOnWindowResize = this.autoResizeCheckbox.Checked;
             settings.PortScanTimeoutSeconds = this.ResolveTimeOut();
         }
 

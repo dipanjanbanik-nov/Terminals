@@ -535,6 +535,21 @@ namespace Terminals
             set { this["restoreWindowOnLastTerminalDisconnect"] = value; }
         }
 
+        [ConfigurationProperty("autoResizeConnectionsOnWindowResize", DefaultValue = false)]
+        public bool AutoResizeConnectionsOnWindowResize
+        {
+            get
+            {
+                if (this["autoResizeConnectionsOnWindowResize"] == null ||
+                    this["autoResizeConnectionsOnWindowResize"].ToString() == string.Empty)
+                    return false;
+                bool autoResize = false;
+                bool.TryParse(this["autoResizeConnectionsOnWindowResize"].ToString(), out autoResize);
+                return autoResize;
+            }
+            set { this["autoResizeConnectionsOnWindowResize"] = value; }
+        }
+
         [ConfigurationProperty("enableFavoritesPanel", DefaultValue = true)]
         public bool EnableFavoritesPanel
         {
