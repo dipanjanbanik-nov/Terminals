@@ -585,6 +585,20 @@ namespace Terminals.Configuration
             }
         }
 
+        public bool AutoResizeConnectionsOnWindowResize
+        {
+            get
+            {
+                return GetSection().AutoResizeConnectionsOnWindowResize;
+            }
+
+            set
+            {
+                GetSection().AutoResizeConnectionsOnWindowResize = value;
+                SaveImmediatelyIfRequested();
+            }
+        }
+
         public bool EnableFavoritesPanel
         {
             get

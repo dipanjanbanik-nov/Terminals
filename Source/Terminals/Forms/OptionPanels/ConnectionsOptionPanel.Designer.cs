@@ -42,6 +42,7 @@ namespace Terminals.Forms
             this.groupBoxConnections = new System.Windows.Forms.GroupBox();
             this.tryReconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.restoreWindowCheckbox = new System.Windows.Forms.CheckBox();
+            this.autoResizeCheckbox = new System.Windows.Forms.CheckBox();
             this.validateServerNamesCheckbox = new System.Windows.Forms.CheckBox();
             this.warnDisconnectCheckBox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
@@ -56,7 +57,7 @@ namespace Terminals.Forms
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(514, 332);
+            this.panel1.Size = new System.Drawing.Size(514, 342);
             this.panel1.TabIndex = 25;
             // 
             // groupBox12
@@ -67,7 +68,7 @@ namespace Terminals.Forms
             this.groupBox12.Controls.Add(this.txtDefaultDesktopShare);
             this.groupBox12.Controls.Add(this.lblEvaluatedDesktopShare);
             this.groupBox12.Controls.Add(this.lblPortScannerTimeout);
-            this.groupBox12.Location = new System.Drawing.Point(6, 143);
+            this.groupBox12.Location = new System.Drawing.Point(6, 170);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(500, 166);
             this.groupBox12.TabIndex = 20;
@@ -132,9 +133,10 @@ namespace Terminals.Forms
             this.groupBoxConnections.Controls.Add(this.restoreWindowCheckbox);
             this.groupBoxConnections.Controls.Add(this.validateServerNamesCheckbox);
             this.groupBoxConnections.Controls.Add(this.warnDisconnectCheckBox);
+            this.groupBoxConnections.Controls.Add(this.autoResizeCheckbox);
             this.groupBoxConnections.Location = new System.Drawing.Point(6, 3);
             this.groupBoxConnections.Name = "groupBoxConnections";
-            this.groupBoxConnections.Size = new System.Drawing.Size(500, 134);
+            this.groupBoxConnections.Size = new System.Drawing.Size(500, 161);
             this.groupBoxConnections.TabIndex = 4;
             this.groupBoxConnections.TabStop = false;
             // 
@@ -157,6 +159,16 @@ namespace Terminals.Forms
             this.restoreWindowCheckbox.TabIndex = 20;
             this.restoreWindowCheckbox.Text = "Automatically restore main window when the last connection is closed";
             this.restoreWindowCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // autoResizeCheckbox
+            // 
+            this.autoResizeCheckbox.AutoSize = true;
+            this.autoResizeCheckbox.Location = new System.Drawing.Point(6, 128);
+            this.autoResizeCheckbox.Name = "autoResizeCheckbox";
+            this.autoResizeCheckbox.Size = new System.Drawing.Size(292, 21);
+            this.autoResizeCheckbox.TabIndex = 24;
+            this.autoResizeCheckbox.Text = "Auto-resize based on the window size";
+            this.autoResizeCheckbox.UseVisualStyleBackColor = true;
             // 
             // validateServerNamesCheckbox
             // 
@@ -186,7 +198,7 @@ namespace Terminals.Forms
             // 
             this.Controls.Add(this.panel1);
             this.Name = "ConnectionsOptionPanel";
-            this.Size = new System.Drawing.Size(514, 332);
+            this.Size = new System.Drawing.Size(514, 342);
             this.panel1.ResumeLayout(false);
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
@@ -211,5 +223,6 @@ namespace Terminals.Forms
         private CheckBox warnDisconnectCheckBox;
         private CheckBox restoreWindowCheckbox;
         private CheckBox tryReconnectCheckBox;
+        private CheckBox autoResizeCheckbox;
     }
 }

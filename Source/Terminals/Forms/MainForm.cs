@@ -28,6 +28,9 @@ namespace Terminals
 
         private readonly Settings settings = Settings.Instance;
 
+        private Size lastConnectionResizeSize = Size.Empty;
+        private FormWindowState lastConnectionResizeWindowState = FormWindowState.Normal;
+
         #region Declarations
 
         private const String FULLSCREEN_ERROR_MSG = "Screen properties not available for RDP";
@@ -613,12 +616,45 @@ namespace Terminals
             {
                 SetWindowState();
             }
+
+            if (this.WindowState != this.lastConnectionResizeWindowState)
+            {
+                this.lastConnectionResizeWindowState = this.WindowState;
+                this.TryAutoResizeReconnect();
+            }
         }
 
         private void MainForm_Move(object sender, EventArgs e)
         {
             if (!fullScreenSwitch.SwitchingFullScreen && this.WindowState == FormWindowState.Normal)
                 fullScreenSwitch.LastWindowStateNormalLocation = this.Location;
+        }
+
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            // ResizeEnd also fires when the window is only moved (not resized),
+            // so the actual size change is verified in TryAutoResizeReconnect.
+            this.TryAutoResizeReconnect();
+        }
+
+        private void TryAutoResizeReconnect()
+        {
+            if (!settings.AutoResizeConnectionsOnWindowResize)
+                return;
+
+            if (this.WindowState == FormWindowState.Minimized)
+                return;
+
+            Size currentSize = this.ClientSize;
+            bool sizeWasKnown = this.lastConnectionResizeSize != Size.Empty;
+            if (this.lastConnectionResizeSize == currentSize)
+                return;
+
+            this.lastConnectionResizeSize = currentSize;
+
+            // Skip the very first observed size (e.g. on startup), only reconnect on actual changes.
+            if (sizeWasKnown && this.terminalsControler.CurrentConnection != null)
+                this.Reconnect();
         }
 
         #endregion
