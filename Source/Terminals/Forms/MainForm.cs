@@ -1119,6 +1119,45 @@ namespace Terminals
             this.terminalsControler.CaptureScreen();
         }
 
+        private void TsbAutoTypeUsername_Click(object sender, EventArgs e)
+        {
+            this.AutoTypeCredentialPart(security => security.UserName);
+        }
+
+        private void TsbAutoTypePassword_Click(object sender, EventArgs e)
+        {
+            this.AutoTypeCredentialPart(security => security.Password);
+        }
+
+        private void AutoTypeCredentialPart(Func<IGuardedSecurity, string> selector)
+        {
+            var connection = this.terminalsControler.CurrentConnection as Connection;
+            if (connection == null || connection.Favorite == null)
+                return;
+
+            IGuardedSecurity security = connection.CredentialFactory
+                .CreateSecurityOptoins(connection.Favorite.Security)
+                .GetResolvedCredentials();
+
+            string value = selector(security);
+            if (string.IsNullOrEmpty(value))
+                return;
+
+            var focusable = connection as IConnectionExtra;
+            if (focusable != null)
+                focusable.Focus();
+
+            SendKeys.SendWait(EscapeForSendKeys(value));
+        }
+
+        private static string EscapeForSendKeys(string value)
+        {
+            return value.Replace("{", "{{}").Replace("}", "{}}")
+                .Replace("+", "{+}").Replace("^", "{^}")
+                .Replace("%", "{%}").Replace("~", "{~}")
+                .Replace("(", "{(}").Replace(")", "{)}");
+        }
+
         private void CaptureTerminalScreenToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.terminalsControler.CaptureScreen();

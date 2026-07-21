@@ -40,6 +40,8 @@ namespace Terminals
             this.timerHover = new System.Windows.Forms.Timer(this.components);
             this.MainWindowNotifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.QuickContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tsbAutoTypeUsername = new System.Windows.Forms.ToolStripButton();
+            this.tsbAutoTypePassword = new System.Windows.Forms.ToolStripButton();
             this.tabControlItem1 = new TabControl.TabControlItem();
             this.tabControlItem2 = new TabControl.TabControlItem();
             this.toolStripContainer = new Terminals.Forms.Controls.ToolStripContainer();
@@ -888,7 +890,9 @@ namespace Terminals
             this.toolStripButtonCaptureManager,
             this.toolStripSeparator4,
             this.toolStripButton2,
-            this.toolStripButton5});
+            this.toolStripButton5,
+            this.tsbAutoTypeUsername,
+            this.tsbAutoTypePassword});
             this.toolbarStd.Location = new System.Drawing.Point(3, 49);
             this.toolbarStd.Name = "toolbarStd";
             this.toolbarStd.Size = new System.Drawing.Size(659, 25);
@@ -1084,6 +1088,28 @@ namespace Terminals
     "rst.  (Ctrl+F12)";
             this.CaptureScreenToolStripButton.Click += new System.EventHandler(this.CaptureScreenToolStripButton_Click);
             // 
+            // tsbAutoTypeUsername
+            // 
+            this.tsbAutoTypeUsername.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAutoTypeUsername.Image = global::Terminals.Properties.Resources.application_user;
+            this.tsbAutoTypeUsername.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAutoTypeUsername.Name = "tsbAutoTypeUsername";
+            this.tsbAutoTypeUsername.Size = new System.Drawing.Size(23, 22);
+            this.tsbAutoTypeUsername.Text = "Auto Type Username";
+            this.tsbAutoTypeUsername.ToolTipText = "Auto type the saved user name into the active terminal";
+            this.tsbAutoTypeUsername.Click += new System.EventHandler(this.TsbAutoTypeUsername_Click);
+            // 
+            // tsbAutoTypePassword
+            // 
+            this.tsbAutoTypePassword.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tsbAutoTypePassword.Image = global::Terminals.Properties.Resources.password;
+            this.tsbAutoTypePassword.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAutoTypePassword.Name = "tsbAutoTypePassword";
+            this.tsbAutoTypePassword.Size = new System.Drawing.Size(23, 22);
+            this.tsbAutoTypePassword.Text = "Auto Type Password";
+            this.tsbAutoTypePassword.ToolTipText = "Auto type the saved password into the active terminal";
+            this.tsbAutoTypePassword.Click += new System.EventHandler(this.TsbAutoTypePassword_Click);
+            // 
             // toolStripButtonCaptureManager
             // 
             this.toolStripButtonCaptureManager.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -1213,6 +1239,8 @@ namespace Terminals
         private System.Windows.Forms.ToolStripButton tsbFavorites;
         private System.Windows.Forms.NotifyIcon MainWindowNotifyIcon;
         private System.Windows.Forms.ToolStripButton CaptureScreenToolStripButton;
+        private System.Windows.Forms.ToolStripButton tsbAutoTypeUsername;
+        private System.Windows.Forms.ToolStripButton tsbAutoTypePassword;
         private System.Windows.Forms.ToolStripMenuItem captureTerminalScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ContextMenuStrip QuickContextMenu;
