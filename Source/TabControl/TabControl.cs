@@ -818,7 +818,7 @@ namespace TabControl
                 Pen pen = SystemPens.ControlDark;
                 if (currentItem == SelectedItem)
                 {
-                    pen = new Pen(ToolStripRenderer.ColorTable.MenuStripGradientBegin);
+                    pen = new Pen(Color.DarkGreen, 2f);
                 }
                 g.DrawPath(pen, path);
                 if (currentItem == SelectedItem)
@@ -879,7 +879,17 @@ namespace TabControl
                 }
 
                 g.FillPath(brush, path);
-                g.DrawPath(SystemPens.ControlDark, path);
+                if (currentItem == SelectedItem)
+                {
+                    using (Pen selectedPen = new Pen(Color.DarkGreen, 2f))
+                    {
+                        g.DrawPath(selectedPen, path);
+                    }
+                }
+                else
+                {
+                    g.DrawPath(SystemPens.ControlDark, path);
+                }
 
                 if (currentItem == SelectedItem)
                 {
