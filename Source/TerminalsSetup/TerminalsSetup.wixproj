@@ -1,4 +1,4 @@
-<Project Sdk="WixToolset.Sdk/7.0.0">
+﻿<Project Sdk="WixToolset.Sdk/7.0.0">
   <PropertyGroup>
     <ProductVersion>3.7</ProductVersion>
     <SccProjectName>SAK</SccProjectName>
@@ -6,6 +6,11 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccLocalPath>SAK</SccLocalPath>
     <AcceptEula>wix7</AcceptEula>
+	<SignOutput>true</SignOutput>
+	<!--<SignToolPath Condition="'$(SignToolPath)' == ''">$(MSBuildProgramFiles32)\Microsoft SDKs\ClickOnce\SignTool\signtool.exe</SignToolPath>
+	<CodeSigningThumbprint Condition="'$(CodeSigningThumbprint)' == ''">PutYourThumbprintHere</CodeSigningThumbprint>
+	<TimestampUrl Condition="'$(TimestampUrl)' == ''">http://timestamp.acs.microsoft.com</TimestampUrl>
+	<SigningCertificate>..\KeyFile\Terminals_TemporaryKey.pfx</SigningCertificate>-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>..\..\Build\Output\$(Configuration)\</OutputPath>
@@ -140,4 +145,8 @@
   <ItemGroup>
     <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
   </ItemGroup>
+	<!--<Target Name="SignMsi">
+		<Message Importance="high" Text="Signing MSI: %(SignMsi.FullPath)" />
+		<Exec Command="&quot;$(SignToolPath)&quot; sign /v /sha1 &quot;$(CodeSigningThumbprint)&quot; /fd SHA256 /tr &quot;$(TimestampUrl)&quot; /td SHA256 &quot;%(SignMsi.FullPath)&quot;" />
+	</Target>-->
 </Project>

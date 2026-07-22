@@ -17,10 +17,9 @@
     <SccProvider>{4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}</SccProvider>
     <ApplicationIcon>terminalsicon.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <ManifestCertificateThumbprint>200FB5A1E56B57D807AAEEC6C4E021804D6435FD</ManifestCertificateThumbprint>
-    <ManifestKeyFile>Terminals_TemporaryKey.pfx</ManifestKeyFile>
+    <!-- <AssemblyOriginatorKeyFile>..\KeyFile\Terminals_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <ManifestCertificateThumbprint>PUTYOURTHUMBPRINTHERE</ManifestCertificateThumbprint>
+    <ManifestKeyFile>"..\KeyFile\Terminals_TemporaryKey.pfx"</ManifestKeyFile> -->
     <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
@@ -29,7 +28,7 @@
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <TargetZone>LocalIntranet</TargetZone>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
@@ -103,6 +102,9 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestTimestampUrl>http://timestamp.acs.microsoft.com</ManifestTimestampUrl>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AWSSDK, Version=1.3.10.0, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
@@ -1566,6 +1568,7 @@
     <Content Include="Terminals.log4net.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="..\KeyFile\Terminals_TemporaryKey.pfx" />
     <None Include="Updates\TerminalsUpdates.xsc">
       <DependentUpon>TerminalsUpdates.xsd</DependentUpon>
     </None>
@@ -1679,4 +1682,11 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.2\build\EntityFramework.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.2\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.2\build\EntityFramework.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+REM set SIGNTOOLEXE="$(MSBuildProgramFiles32)\Microsoft SDKs\ClickOnce\SignTool\signtool.exe"
+REM if not exist %25SIGNTOOLEXE%25 set SIGNTOOLEXE=signtool.exe
+REM for %25%25f in ("$(TargetDir)*.dll" "$(TargetDir)*.exe") do %25SIGNTOOLEXE%25 sign /fd SHA256 /tr $(ManifestTimestampUrl) /td SHA256 /sha1 $(ManifestCertificateThumbprint) "%25%25f"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>
