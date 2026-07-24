@@ -38,6 +38,14 @@ namespace Terminals.Security
         /// </summary>
         private const int IV_LENGTH = PasswordFunctions.IV_LENGTH;
 
+        /// <summary>
+        /// Fixed passphrase used to derive a machine independent key, when no master password is defined.
+        /// This replaces the previous usage of Windows DPAPI (<see cref="System.Security.Cryptography.ProtectedData"/>),
+        /// which tied encrypted passwords to the local user account/machine, preventing the credentials file
+        /// from being read after being copied to another computer.
+        /// </summary>
+        private const string NO_MASTER_PASSWORD_KEY_MATERIAL = "Terminals.NoMasterPassword.PortableKey";
+
         private static readonly RandomNumberGenerator saltGenerator = RandomNumberGenerator.Create();
 
         /// <summary>
@@ -137,10 +145,11 @@ namespace Terminals.Security
 
         private static string EncryptByEmptyKeyMaterial(string password)
         {
+            // Use a machine independent key derived from a fixed passphrase, instead of Windows DPAPI,
+            // so the encrypted value can be decrypted after the credentials file is copied to another computer.
             byte[] initializationVector = CreateRandomKeySalt();
-            byte[] passwordBytes = Encoding.Unicode.GetBytes(password);
-            byte[] protectedPassword = ProtectedData.Protect(passwordBytes, initializationVector, DataProtectionScope.CurrentUser);
-            return ConcatenatePasswordPartsToText(initializationVector, protectedPassword);
+            byte[] passwordKey = CalculateMasterPasswordKey(NO_MASTER_PASSWORD_KEY_MATERIAL, initializationVector);
+            return EncryptPassword(password, passwordKey, initializationVector);
         }
 
         private static string EncryptPassword(string password, byte[] passwordKey, byte[] initializationVector)
@@ -178,8 +187,20 @@ namespace Terminals.Security
         private static string DecryptByEmptyKeyMaterial(string encryptedPassword)
         {
             Tuple<byte[], byte[]> passwordParts = SplitEncryptedPassword(encryptedPassword);
-            byte[] plaintext = ProtectedData.Unprotect(passwordParts.Item2, passwordParts.Item1, DataProtectionScope.CurrentUser);
-            return Encoding.Unicode.GetString(plaintext);
+            byte[] passwordKey = CalculateMasterPasswordKey(NO_MASTER_PASSWORD_KEY_MATERIAL, passwordParts.Item1);
+
+            try
+            {
+                byte[] decrypted = PasswordFunctions.DecryptByKey(passwordParts.Item2, passwordParts.Item1, passwordKey);
+                return Encoding.Unicode.GetString(decrypted);
+            }
+            catch (CryptographicException)
+            {
+                // Fallback for passwords encrypted by a previous version, which used Windows DPAPI.
+                // Only works when decrypted on the same user account/machine which created the file.
+                byte[] plaintext = ProtectedData.Unprotect(passwordParts.Item2, passwordParts.Item1, DataProtectionScope.CurrentUser);
+                return Encoding.Unicode.GetString(plaintext);
+            }
         }
 
         private static string DecryptPassword(string encryptedPassword, byte[] passwordKey)
