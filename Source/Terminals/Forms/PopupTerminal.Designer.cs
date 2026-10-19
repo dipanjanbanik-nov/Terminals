@@ -29,6 +29,7 @@
             this.AttachToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.CaptureToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonFullScreen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonReconnect = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.tabControl1)).BeginInit();
             this.mainToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -49,7 +50,8 @@
             this.mainToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.AttachToolStripButton,
             this.CaptureToolStripButton,
-            this.toolStripButtonFullScreen});
+            this.toolStripButtonFullScreen,
+            this.toolStripButtonReconnect});
             this.mainToolStrip.Location = new System.Drawing.Point(0, 0);
             this.mainToolStrip.Name = "mainToolStrip";
             this.mainToolStrip.Size = new System.Drawing.Size(445, 25);
@@ -86,6 +88,15 @@
             this.toolStripButtonFullScreen.Text = "Full screen";
             this.toolStripButtonFullScreen.Click += new System.EventHandler(this.ToolStripButtonFullScreen_Click);
             // 
+            // toolStripButtonReconnect
+            // 
+            this.toolStripButtonReconnect.Image = global::Terminals.Properties.Resources.Refresh;
+            this.toolStripButtonReconnect.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonReconnect.Name = "toolStripButtonReconnect";
+            this.toolStripButtonReconnect.Size = new System.Drawing.Size(83, 22);
+            this.toolStripButtonReconnect.Text = "Reconnect";
+            this.toolStripButtonReconnect.Click += new System.EventHandler(this.ToolStripButtonReconnect_Click);
+            // 
             // PopupTerminal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -115,5 +126,6 @@
         private System.Windows.Forms.ToolStripButton AttachToolStripButton;
         private System.Windows.Forms.ToolStripButton CaptureToolStripButton;
         private System.Windows.Forms.ToolStripButton toolStripButtonFullScreen;
+        private System.Windows.Forms.ToolStripButton toolStripButtonReconnect;
     }
 }
