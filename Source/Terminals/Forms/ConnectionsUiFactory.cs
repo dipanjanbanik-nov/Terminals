@@ -103,6 +103,38 @@ namespace Terminals.Forms
             this.Connect(definition);
         }
 
+        internal void Reconnect(TerminalTabControlItem terminalTabPage)
+        {
+            IConnection previous = terminalTabPage.Connection;
+            if (previous == null)
+                return;
+
+            IFavorite origin = previous.OriginFavorite;
+            IFavorite configured = previous.Favorite;
+            try
+            {
+                var previousControl = previous as Connection;
+                if (previousControl != null)
+                    previousControl.OnDisconnected -= this.mainForm.OnDisconnected;
+
+                previous.Dispose();
+                Connection connection = this.CreateConnection(origin, configured, terminalTabPage);
+                if (connection.Connect())
+                {
+                    connection.BringToFront();
+                    connection.Focus();
+                }
+                else
+                {
+                    ShowConnectionError(connection);
+                }
+            }
+            catch (Exception exc)
+            {
+                Logging.Error("Error reconnecting a terminal", exc);
+            }
+        }
+
         /// <summary>
         /// Connects to all favorites required by definition.
         /// </summary>
@@ -253,12 +285,17 @@ namespace Terminals.Forms
             }
             else
             {
-                String msg = Program.Resources.GetString("SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation");
-                if (!string.IsNullOrEmpty(conn.LastError))
-                    msg = msg + "\r\n\r\nDetails:\r\n" + conn.LastError;
-                MessageBox.Show(msg);
+                ShowConnectionError(conn);
                 this.terminalsControler.RemoveAndUnSelect(terminalTabPage);
             }
+        }
+
+        private static void ShowConnectionError(Connection connection)
+        {
+            String msg = Program.Resources.GetString("SorryTerminalswasunabletoconnecttotheremotemachineTryagainorcheckthelogformoreinformation");
+            if (!string.IsNullOrEmpty(connection.LastError))
+                msg = msg + "\r\n\r\nDetails:\r\n" + connection.LastError;
+            MessageBox.Show(msg);
         }
 
         private void BringToFrontOnMainForm(Control tabContentControl)

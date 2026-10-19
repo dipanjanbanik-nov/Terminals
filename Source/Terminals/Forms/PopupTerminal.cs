@@ -124,6 +124,31 @@ namespace Terminals
             this.SwithFullScreen();
         }
 
+        private void ToolStripButtonReconnect_Click(object sender, EventArgs e)
+        {
+            TerminalTabControlItem activeTab = this.tabControl1.SelectedItem as TerminalTabControlItem;
+            if (activeTab == null || activeTab.Connection == null)
+                return;
+
+            this.toolStripButtonReconnect.Enabled = false;
+            if (this.closeTimer != null)
+                this.closeTimer.Stop();
+
+            try
+            {
+                this.mainTabsControler.Reconnect(activeTab);
+            }
+            finally
+            {
+                if (!this.IsDisposed)
+                {
+                    this.toolStripButtonReconnect.Enabled = true;
+                    if (this.closeTimer != null)
+                        this.closeTimer.Start();
+                }
+            }
+        }
+
         private void SwithFullScreen()
         {
             this.fullScreen = !this.fullScreen;

@@ -59,6 +59,11 @@ namespace Terminals
             this.connectionsUiFactory = connectionsUiFactory;
         }
 
+        internal void Reconnect(TerminalTabControlItem terminalTabPage)
+        {
+            this.connectionsUiFactory.Reconnect(terminalTabPage);
+        }
+
         private void OnFavoritesChanged(FavoritesChangedEventArgs args)
         {
             foreach (IFavorite updated in args.Updated)
