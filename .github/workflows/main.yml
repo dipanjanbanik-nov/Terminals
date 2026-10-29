@@ -43,7 +43,7 @@ jobs:
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
       - name: Test Report
-        uses: dorny/test-reporter@v3
+        uses: dorny/test-reporter@v2
         if: success() || failure() # run this step even if previous step failed
         with:
           name: MSTests
