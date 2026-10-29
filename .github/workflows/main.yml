@@ -20,9 +20,9 @@ jobs:
       checks: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Setup-msbuild
-        uses: microsoft/setup-msbuild@v2
+        uses: microsoft/setup-msbuild@v3
       - name: Restore Packages
         run: msbuild ${{ env.SLN_FILE_PATH }} -t:Restore -p:RestorePackagesConfig=true -p:Configuration=DistributionRelease "-p:Platform=Any CPU"
       - name: Build solution and installer
