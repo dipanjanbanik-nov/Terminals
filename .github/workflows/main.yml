@@ -40,10 +40,33 @@ jobs:
         with:
           install: localdb
           show-log: true
+      - name: Start and verify SQL LocalDB
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+
+          sqllocaldb start MSSQLLocalDB
+          if ($LASTEXITCODE -ne 0) {
+            throw "Failed to start SQL LocalDB"
+          }
+
+          for ($attempt = 1; $attempt -le 6; $attempt++) {
+            sqlcmd -S '(localdb)\MSSQLLocalDB' -E -d master `
+              -Q "SELECT 1" -l 30 -b
+
+            if ($LASTEXITCODE -eq 0) {
+              exit 0
+            }
+
+            Start-Sleep -Seconds 5
+          }
+
+          throw "SQL LocalDB did not become ready"
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
       - name: Test Report
-        uses: dorny/test-reporter@v2
+        uses: dorny/test-reporter@v3
         if: success() || failure() # run this step even if previous step failed
         with:
           name: MSTests
