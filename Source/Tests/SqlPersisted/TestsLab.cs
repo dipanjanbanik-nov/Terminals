@@ -8,6 +8,8 @@ using Terminals.Data;
 using Terminals.Data.DB;
 using Tests.Connections;
 using Tests.FilePersisted;
+using System.Security.AccessControl;
+using System.Security.Principal;
 
 namespace Tests.SqlPersisted
 {
@@ -124,14 +126,48 @@ namespace Tests.SqlPersisted
 
         private void RemoveDatabaseFileReadOnly()
         {
-            this.RemoveReadOnlyAttribute(DBF_FILE_NAME);
-            this.RemoveReadOnlyAttribute("Terminals_log.ldf");
-        }
+            string directory = this.TestContext.DeploymentDirectory;
 
-        private void RemoveReadOnlyAttribute(string fileName)
-        {
-            string databaseMdf = Path.Combine(this.TestContext.DeploymentDirectory, fileName);
-            File.SetAttributes(databaseMdf, FileAttributes.Normal);
+            using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
+            {
+                SecurityIdentifier user = identity.User;
+                if (user == null)
+                {
+                    throw new InvalidOperationException(
+                        "Cannot determine the Windows identity running SQL LocalDB.");
+                }
+
+                DirectorySecurity directorySecurity = Directory.GetAccessControl(directory);
+                directorySecurity.AddAccessRule(new FileSystemAccessRule(
+                    user,
+                    FileSystemRights.Modify,
+                    InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit,
+                    PropagationFlags.None,
+                    AccessControlType.Allow));
+                Directory.SetAccessControl(directory, directorySecurity);
+
+                foreach (string fileName in new[] { DBF_FILE_NAME, "Terminals_log.ldf" })
+                {
+                    string path = Path.Combine(directory, fileName);
+
+                    if (!File.Exists(path))
+                    {
+                        throw new FileNotFoundException(
+                            "Required test database file was not deployed.", path);
+                    }
+
+                    File.SetAttributes(
+                        path,
+                        File.GetAttributes(path) & ~FileAttributes.ReadOnly);
+
+                    FileSecurity fileSecurity = File.GetAccessControl(path);
+                    fileSecurity.AddAccessRule(new FileSystemAccessRule(
+                        user,
+                        FileSystemRights.Modify,
+                        AccessControlType.Allow));
+                    File.SetAccessControl(path, fileSecurity);
+                }
+            }
         }
 
         /// <summary>
