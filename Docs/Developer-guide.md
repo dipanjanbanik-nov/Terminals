@@ -1,5 +1,8 @@
 # Developer guide
 ## Continuous integration
+* The GitHub Actions CI workflow runs on `windows-latest` and builds the `DistributionRelease|Any CPU` solution configuration, including the x86 WiX installer.
+* After a successful build, download the `Terminals-installer` artifact from the workflow run's **Artifacts** section. It contains `TerminalsSetup.msi`; CI installers are unsigned.
+* The workflow also runs the existing MSTest suite and publishes its test report.
 * There are a private Team City and SonarQube servers configured for our project 
 * As a project developer ask for developer access
 * These builds shouldn't be used as public available development builds (beta or RC)

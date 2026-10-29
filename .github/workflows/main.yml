@@ -10,23 +10,26 @@ on:
   workflow_dispatch:
 
 env:
-  SLN_FILE_PATH: Source/Terminals.sln
+  SLN_FILE_PATH: Source\Terminals.sln
 
 jobs:
   build:
-    # because of legacy dotnet 4.8
-    runs-on: windows-2019
+    runs-on: windows-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup-msbuild
-        uses: microsoft/setup-msbuild@v1.1
-      - name: Setup NuGet
-        uses: NuGet/setup-nuget@v1.1.1
+        uses: microsoft/setup-msbuild@v2
       - name: Restore Packages
-        run: nuget restore ${{ env.SLN_FILE_PATH }}
-      - name: Build solution
-        run: msbuild ${{ env.SLN_FILE_PATH }} -t:rebuild -property:Configuration=Release
+        run: msbuild ${{ env.SLN_FILE_PATH }} -t:Restore -p:RestorePackagesConfig=true -p:Configuration=DistributionRelease "-p:Platform=Any CPU"
+      - name: Build solution and installer
+        run: msbuild ${{ env.SLN_FILE_PATH }} -t:Rebuild -p:Configuration=DistributionRelease "-p:Platform=Any CPU" -p:SignOutput=false
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: Terminals-installer
+          path: Build\Output\Release\TerminalsSetup.msi
+          if-no-files-found: error
       - name: Setup VSTest
         uses: darenm/Setup-VSTest@v1.2
       - name: Install a SQL Server suite of tools
