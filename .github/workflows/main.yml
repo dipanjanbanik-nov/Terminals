@@ -28,22 +28,22 @@ jobs:
       - name: Build solution and installer
         run: msbuild ${{ env.SLN_FILE_PATH }} -t:Rebuild -p:Configuration=DistributionRelease "-p:Platform=Any CPU" -p:SignOutput=false
       - name: Upload installer
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Terminals-installer
           path: Build\Output\Release\TerminalsSetup.msi
           if-no-files-found: error
       - name: Setup VSTest
-        uses: darenm/Setup-VSTest@v1.2
+        uses: darenm/Setup-VSTest@v1.3
       - name: Install a SQL Server suite of tools
-        uses: potatoqualitee/mssqlsuite@v1.7
+        uses: potatoqualitee/mssqlsuite@v2
         with:
           install: localdb
           show-log: true
       - name: Test
         run: vstest.console.exe /logger:"trx;LogFileName=test_results.trx" Source\Tests\bin\Release\Tests.dll
       - name: Test Report
-        uses: dorny/test-reporter@v1.6.0
+        uses: dorny/test-reporter@v3
         if: success() || failure() # run this step even if previous step failed
         with:
           name: MSTests
