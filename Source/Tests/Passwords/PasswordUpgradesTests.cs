@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Terminals.Configuration;
 using Terminals.Data;
@@ -54,6 +55,7 @@ namespace Tests.Passwords
         public void V2UpgradeNoMasterPasswordConfigTest()
         {
             this.UpgradePasswordsTestInitialize(NOMASTER_CONFIG_FILE, NOMASTER_CREDENTIALS_FILE);
+            this.PrepareNoMasterPasswordFiles();
             // simply nothing to upgrade, procedure shouldn't fail.
             IPersistence persistence = this.RunUpgrade();
             Assert.IsFalse(askedForPassword, "Config file shouldn't ask for password");
@@ -74,6 +76,27 @@ namespace Tests.Passwords
             Assert.IsTrue(masterStillValid, "Master password upgrade failed.");
             AssertUserAndCredential(persistence);
             AssertFavoriteCredentialSet(persistence);
+        }
+
+        private void PrepareNoMasterPasswordFiles()
+        {
+            // Legacy no-master passwords use DPAPI and must be encrypted by the current Windows user.
+            var config = XDocument.Load(this.settings.FileLocations.Configuration);
+            foreach (XElement favorite in config.Descendants("favorites").Elements("add"))
+            {
+                string password = string.IsNullOrEmpty((string)favorite.Attribute("credential"))
+                    ? PasswordTests.USERPASSWORD : TEST_PASSWORD;
+                favorite.SetAttributeValue("encryptedPassword", PasswordFunctions.EncryptPassword(password, string.Empty));
+            }
+            config.Save(this.settings.FileLocations.Configuration);
+
+            var credentials = XDocument.Load(this.settings.FileLocations.Credentials);
+            foreach (XElement password in credentials.Descendants("Password"))
+            {
+                password.Value = PasswordFunctions.EncryptPassword(TEST_PASSWORD, string.Empty);
+            }
+            credentials.Save(this.settings.FileLocations.Credentials);
+            this.settings.ForceReload();
         }
 
         private static void AssertUserAndCredential(IPersistence persistence)

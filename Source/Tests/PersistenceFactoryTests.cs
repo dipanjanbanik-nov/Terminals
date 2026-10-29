@@ -11,6 +11,7 @@ namespace Tests
 {
     [DeploymentItem(SqlPersisted.TestsLab.DATABASE_LOG)]
     [DeploymentItem(SqlPersisted.TestsLab.DATABASE_MDF)]
+    [DeploymentItem("EntityFramework.SqlServer.dll")]
     [TestClass]
     public class PersistenceFactoryTests
     {

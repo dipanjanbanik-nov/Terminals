@@ -16,6 +16,7 @@ namespace Tests.SqlPersisted
     /// </summary>
     [DeploymentItem(DATABASE_LOG)]
     [DeploymentItem(DATABASE_MDF)]
+    [DeploymentItem("EntityFramework.SqlServer.dll")]
     public class TestsLab
     {
         private const string DBF_FILE_NAME = "Terminals.mdf";
@@ -161,9 +162,10 @@ namespace Tests.SqlPersisted
         /// </summary>
         private void SetTrustWorthyOn(System.Data.Entity.Database checkQueries)
         {
-            string mdfFile = Path.Combine(this.TestContext.DeploymentDirectory, DBF_FILE_NAME);
-            string strustworthyCommand = string.Format(@"ALTER DATABASE ""{0}"" SET TRUSTWORTHY ON", mdfFile);
-            checkQueries.ExecuteSqlCommand(strustworthyCommand);
+            const string TRUSTWORTHY_COMMAND = @"DECLARE @command nvarchar(max) = N'ALTER DATABASE '
+                + QUOTENAME(DB_NAME()) + N' SET TRUSTWORTHY ON';
+                EXEC sp_executesql @command;";
+            checkQueries.ExecuteSqlCommand(System.Data.Entity.TransactionalBehavior.DoNotEnsureTransaction, TRUSTWORTHY_COMMAND);
         }
 
         /// <summary>

@@ -15,6 +15,30 @@ namespace Tests.UserInterface
         private const int IRELEVANT_KEY = 1;
         private const int IRELEVANT_LEFT = 40;
 
+        private string settingsFile;
+        private string settingsFileBackup;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            this.settingsFile = FileLocations.ToolStripsFullFileName;
+            this.settingsFileBackup = this.settingsFile + "." + Guid.NewGuid().ToString("N");
+            if (File.Exists(this.settingsFile))
+                File.Move(this.settingsFile, this.settingsFileBackup);
+        }
+
+        [TestCleanup]
+        public void TestCleanup()
+        {
+            if (File.Exists(this.settingsFile))
+            {
+                File.SetAttributes(this.settingsFile, FileAttributes.Normal);
+                File.Delete(this.settingsFile);
+            }
+            if (File.Exists(this.settingsFileBackup))
+                File.Move(this.settingsFileBackup, this.settingsFile);
+        }
+
         [TestMethod]
         public void NotExistingFile_Load_ReturnsNull()
         {
