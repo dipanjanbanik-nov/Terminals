@@ -85,7 +85,7 @@ namespace Tests.SqlPersisted
         /// </summary>
         protected void InitializeTestLab()
         {
-            this.RemoveDatabaseFileReadOnly();
+            PrepareDatabaseFiles(this.TestContext.DeploymentDirectory);
             FilePersistedTestLab.SetDefaultFileLocations();
             this.SetDeploymentDirConnectionString();
 
@@ -124,10 +124,8 @@ namespace Tests.SqlPersisted
             settings.ConnectionString = String.Format(CONNECTION_STRING, deploymentDir);
         }
 
-        private void RemoveDatabaseFileReadOnly()
+        internal static void PrepareDatabaseFiles(string directory)
         {
-            string directory = this.TestContext.DeploymentDirectory;
-
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
             {
                 SecurityIdentifier user = identity.User;

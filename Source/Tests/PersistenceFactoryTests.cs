@@ -54,7 +54,9 @@ namespace Tests
         {
             this.SetupDatabasePersistence(this.TestContext.DeploymentDirectory);
             this.Authenticate(false, string.Empty);
-            Assert.IsTrue(!this.exitCalled && !this.passwordRequested && !this.fallbackRequested);
+            Assert.IsFalse(this.exitCalled, "SQL authentication unexpectedly exited.");
+            Assert.IsFalse(this.passwordRequested, "SQL authentication unexpectedly requested a master password.");
+            Assert.IsFalse(this.fallbackRequested, "SQL persistence initialization unexpectedly requested file fallback.");
         }
 
         [TestMethod]
@@ -63,7 +65,9 @@ namespace Tests
             this.SetupDatabasePersistence(this.TestContext.DeploymentDirectory);
             this.authenticationPrompt.Password = EXPECTED_PASSWORD;
             this.Authenticate();
-            Assert.IsTrue(!this.exitCalled && this.passwordRequested && !this.fallbackRequested);
+            Assert.IsFalse(this.exitCalled, "SQL authentication unexpectedly exited.");
+            Assert.IsTrue(this.passwordRequested, "SQL authentication did not request the configured master password.");
+            Assert.IsFalse(this.fallbackRequested, "SQL persistence initialization unexpectedly requested file fallback.");
         }
 
         [TestMethod]
@@ -84,10 +88,23 @@ namespace Tests
             Assert.IsTrue(!this.exitCalled && this.passwordRequested && this.fallbackRequested);
         }
 
-        private void SetupDatabasePersistence(string databaseDirecotry)
+        private void SetupDatabasePersistence(string databaseDirectory)
         {
             this.settings.PersistenceType = SqlPersistence.TYPE_ID;
-            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, databaseDirecotry);
+            SqlPersisted.TestsLab.AssignDeploymentDirConnectionString(this.settings, databaseDirectory);
+
+            if (string.IsNullOrEmpty(databaseDirectory))
+                return;
+
+            SqlPersisted.TestsLab.PrepareDatabaseFiles(databaseDirectory);
+            using (Database database = DatabaseConnections.CreateInstance())
+            {
+                database.UpdateMasterPassword(string.Empty);
+            }
+            this.settings.DatabaseMasterPassword = string.Empty;
+
+            TestConnectionResult connection = DatabaseConnections.TestConnection(this.settings.ConnectionString, string.Empty);
+            Assert.IsTrue(connection.Successful, "SQL test database setup failed: " + connection.ErroMessage);
         }
 
         [TestMethod]
